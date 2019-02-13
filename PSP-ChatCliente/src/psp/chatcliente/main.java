@@ -1,19 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package psp.chatcliente;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author espec
+ * @author Alberto
  */
 public class main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form main
-     */
+    final String ipDefecto = "localhost";
+    final int puertoDefecto = 5555;
+
+    // Para el botón On/Off
+    Boolean encendido = false;
+
+    String conversacion = "";
+
+    // Array de bytes para el recoger la información del servidor
+    byte[] resultado;
+
+    Socket clienteSocket;
+    InputStream is;
+    OutputStream os;
+
     public main() {
         initComponents();
     }
@@ -41,6 +56,7 @@ public class main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txArea = new javax.swing.JTextArea();
         txtEscribir = new javax.swing.JTextField();
+        BtnEnviar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,12 +88,22 @@ public class main extends javax.swing.JFrame {
         BtnAceptar.setBorderPainted(false);
         BtnAceptar.setContentAreaFilled(false);
         BtnAceptar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_AceptarActivo.png"))); // NOI18N
+        BtnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnAceptarActionPerformed(evt);
+            }
+        });
 
         BtnDefecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoReposo.png"))); // NOI18N
         BtnDefecto.setBorder(null);
         BtnDefecto.setBorderPainted(false);
         BtnDefecto.setContentAreaFilled(false);
         BtnDefecto.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoActivo.png"))); // NOI18N
+        BtnDefecto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDefectoActionPerformed(evt);
+            }
+        });
 
         LInsertIp.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         LInsertIp.setForeground(new java.awt.Color(134, 146, 153));
@@ -144,6 +170,13 @@ public class main extends javax.swing.JFrame {
         txtEscribir.setAutoscrolls(false);
         txtEscribir.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
+        BtnEnviar.setText("Enviar");
+        BtnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEnviarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,7 +185,10 @@ public class main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
-                    .addComponent(txtEscribir))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtEscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -161,9 +197,11 @@ public class main extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtEscribir)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BtnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtEscribir))
                 .addContainerGap())
         );
 
@@ -171,7 +209,7 @@ public class main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,6 +219,112 @@ public class main extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
+        Encender(TxtDirec.getText(), Integer.parseInt(TxtPuerto.getText()));
+        LInsertIp.setText("Dirección: " + TxtDirec.getText());
+        LInsertPuerto.setText("Puerto: " + TxtPuerto.getText());
+    }//GEN-LAST:event_BtnAceptarActionPerformed
+
+    private void BtnDefectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDefectoActionPerformed
+        Encender(ipDefecto, puertoDefecto);
+        LInsertIp.setText("Dirección: " + ipDefecto);
+        LInsertPuerto.setText("Puerto: " + String.valueOf(puertoDefecto));
+    }//GEN-LAST:event_BtnDefectoActionPerformed
+
+    private void BtnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEnviarActionPerformed
+        recibirTexto(txtEscribir.getText());
+        txtEscribir.setText("");
+    }//GEN-LAST:event_BtnEnviarActionPerformed
+
+    /**
+     * Función On/Off, que conecta y desconecta(además de cerrar la calculadora)
+     * el cliente con el servidor
+     *
+     * @param direccion
+     * @param Puerto
+     */
+    public void Encender(String direccion, int Puerto) {
+        if (encendido == false) {
+
+            try {
+                encendido = true;
+
+                clienteSocket = new Socket();
+
+                InetSocketAddress addr = new InetSocketAddress(direccion, Puerto);
+
+                clienteSocket.connect(addr);
+
+                is = clienteSocket.getInputStream();
+                os = clienteSocket.getOutputStream();
+                
+                // Creamos un usuario donde en la clase se creará un hilo que se pondrá a la escuha de cualquier menjase que recibe del servidor
+                new Usuarios(clienteSocket);
+            } catch (IOException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                System.out.println("Cerrando el socket cliente");
+
+                clienteSocket.close();
+
+                System.exit(0);
+                System.out.println("Terminado");
+            } catch (IOException ex) {
+                Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    /**
+     * Funcion que recibe el texto y lo devuelve
+     *
+     * @param texto
+     * @return texto
+     */
+    private void recibirTexto(String texto) {
+        functionOsIs(texto);
+    }
+
+    /**
+     * Función que inserta las respuestas de los conversantes del chat en el
+     * TextArea
+     *
+     * @param resTexto
+     */
+    public void insertText(String resTexto) {
+       // conversacion += resTexto + "\n";
+
+      //  txArea.setText(conversacion);
+    }
+
+    /**
+     * Función que envia el calculo al servidor y recoge el resultado de este.
+     *
+     * @param calculo
+     */
+    private void functionOsIs(String texto) {
+
+        try {
+            System.out.println("Calculo que enviamos " + texto);
+
+            os.write(texto.getBytes());
+
+            resultado = new byte[2000];
+
+//            is.read(resultado);
+//
+//            String respuesta = new String(resultado);
+//            System.out.println("Mensaje que recibimos  " + respuesta);
+            //   insertText(new String(resultado));
+        } catch (IOException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -220,6 +364,7 @@ public class main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAceptar;
     private javax.swing.JButton BtnDefecto;
+    private javax.swing.JButton BtnEnviar;
     private javax.swing.JButton BtnOcultar;
     private javax.swing.JLabel LInsertIp;
     private javax.swing.JLabel LInsertPuerto;
@@ -230,7 +375,7 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lTituloDireccion;
     private javax.swing.JLabel lTituloPuerto;
-    private javax.swing.JTextArea txArea;
+    public static javax.swing.JTextArea txArea;
     private javax.swing.JTextField txtEscribir;
     // End of variables declaration//GEN-END:variables
 }

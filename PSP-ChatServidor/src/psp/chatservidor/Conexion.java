@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ public class Conexion {
 
     final String ipDefecto = "localhost";
     final int puertoDefecto = 5555;
+    final String mensajeBienvenida = "Bienvenido ";
 
     int usuarios = 0;
 
@@ -66,14 +68,20 @@ public class Conexion {
 
             serverSocket.bind(addr);
 
-            // Se hace el bucle do while para que el servidor quede a la escucha nuevas conexiónes con otro servidor
+            // Se hace el bucle do while para que el servidor quede a la escucha nuevas conexiónes con otro cliente
             do {
 
-                newSocket = serverSocket.accept();
+               if(usuarios >= 3){
+                    System.out.println("Demasiados clientes");
+               }else{
+                            
+                    newSocket = serverSocket.accept();
 
-                new hilo(newSocket).start();
-                usuarios += 1;
-            } while (usuarios <= 10);
+                    new hilo(newSocket).start();
+                    usuarios += 1;                
+               }             
+
+            } while (usuarios <= 3);
 
         } catch (IOException e) {
             System.out.println(e);
@@ -89,6 +97,8 @@ public class Conexion {
         InputStream oldIs;
         OutputStream oldOs;
         byte[] mensaje;
+        // Para enviar el nombre de usuario
+        Boolean primerMensaje = false;
 
         public hilo(Socket newSocket) throws IOException {
 
@@ -103,19 +113,59 @@ public class Conexion {
                 oldIs = oldSocket.getInputStream();
                 oldOs = oldSocket.getOutputStream();
                 // Se hace un do while para quedar a la espera de nuevos Usuarios
+                int contador = 0;
                 do {
+                    // Esto del primer mensaje es para que cuando un nuevo cliente se conecte le mande un mensaje de bienvenida con su nombre.
+                    if (primerMensaje == false) {
+                        mensaje = new byte[2000];
+                        int read = oldIs.read(mensaje);
+                        // Como es la primera vez que entra pues creamos el objeto Clientes con el socket asigando y su nombre.
+                        new Clientes(oldSocket, new String(mensaje));
 
-                    mensaje = new byte[2000];
+                        String respuesta = mensajeBienvenida + new String(mensaje);
 
-                    oldIs.read(mensaje);
+                        // Para ver por consola que recibimos
+                        System.out.println("Mensaje que recibimos " + respuesta);
 
-                    String respuesta = new String(mensaje);
+                        // Recorremos el Arraylist creado en la clase clientes y enviamos el mensaje de bienvenida a todos los 
+                        // sockets, para eso utilizamos el .getOutputStream() junto a su metodo write para enviar
+                        for (Clientes cli : Clientes.clientes) {
+                            // La función trim la utilizo para que si el string tuviera algún espacio al final que lo elimine
+                            cli.getSocket().getOutputStream().write(respuesta.trim().getBytes());
 
-                    System.out.println("Mensaje que recibimos " + respuesta);
-                    // Borra cache y luego envia el mensaje
-                    oldOs.flush();
-                    oldOs.write(respuesta.getBytes());
+                        }
+                        // Ponemos la variable local a true para que no vuelva a entrar
+                        primerMensaje = true;
+                    } else {
+                        String respuesta = null;
 
+                        // Saber si en consola se está conectado bien y no genera más clientes de los que hay
+                        System.out.println("Servidor " + (contador += 1));
+                        mensaje = new byte[2000];
+
+                        int read = oldIs.read(mensaje);
+
+                        System.out.println("int read " + read);
+
+                        // Aquí se hacen 2 bucles, el 1º lo que hace es identificar que cliente envía el mensaje a traves de su socket
+                        // cuando lo encuentra agrega su nombre al mensaje escrito.
+                        for (Clientes cli : Clientes.clientes) {
+
+                            if (cli.getSocket() == oldSocket) {
+                                respuesta = cli.getNick() + " " + new String(mensaje);
+                                System.out.println("Mensaje que recibimos " + respuesta);
+
+                            }
+
+                        }
+
+                        // Aquí envio el mensaje a todos los clientes del Arraylis. No hago esto en el bucle anterior,
+                        //pues sí el mensaje que envio no es del primer cliente en la lista, me enviaría un mensaje Null y con ello una excepción                        
+                        for (Clientes cli : Clientes.clientes) {
+                            cli.getSocket().getOutputStream().write(respuesta.getBytes());
+                        }
+
+                    }
                 } while (true);
 
                 //newSocket.close();

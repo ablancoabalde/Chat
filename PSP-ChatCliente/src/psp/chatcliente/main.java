@@ -49,7 +49,6 @@ public class main extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        BtnOcultar = new javax.swing.JButton();
         lTituloDireccion = new javax.swing.JLabel();
         TxtDirec = new javax.swing.JTextField();
         TxtPuerto = new javax.swing.JTextField();
@@ -60,6 +59,8 @@ public class main extends javax.swing.JFrame {
         LInsertPuerto = new javax.swing.JLabel();
         lTituloDireccion1 = new javax.swing.JLabel();
         TxtNick = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        LnumClientes = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txArea = new javax.swing.JTextArea();
         txtEscribir = new javax.swing.JTextField();
@@ -70,15 +71,6 @@ public class main extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(246, 250, 241));
 
         jPanel2.setBackground(new java.awt.Color(240, 227, 210));
-
-        BtnOcultar.setFont(new java.awt.Font("Tahoma", 1, 3)); // NOI18N
-        BtnOcultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesplazarReposo.png"))); // NOI18N
-        BtnOcultar.setToolTipText("");
-        BtnOcultar.setBorder(null);
-        BtnOcultar.setBorderPainted(false);
-        BtnOcultar.setContentAreaFilled(false);
-        BtnOcultar.setFocusPainted(false);
-        BtnOcultar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesplazarActivo.png"))); // NOI18N
 
         lTituloDireccion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lTituloDireccion.setForeground(new java.awt.Color(134, 146, 153));
@@ -101,11 +93,10 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        BtnDefecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoReposo.png"))); // NOI18N
+        BtnDefecto.setText("Por defecto");
         BtnDefecto.setBorder(null);
         BtnDefecto.setBorderPainted(false);
         BtnDefecto.setContentAreaFilled(false);
-        BtnDefecto.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoActivo.png"))); // NOI18N
         BtnDefecto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnDefectoActionPerformed(evt);
@@ -127,6 +118,11 @@ public class main extends javax.swing.JFrame {
         lTituloDireccion1.setText("NickName:");
         lTituloDireccion1.setToolTipText("");
 
+        jLabel1.setText("Usuarios:");
+
+        LnumClientes.setText("0");
+        LnumClientes.setToolTipText("");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -134,35 +130,32 @@ public class main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lTituloDireccion)
+                    .addComponent(TxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BtnAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(LInsertPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(TxtPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LInsertIp, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnDefecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lTituloPuerto)
+                    .addComponent(lTituloDireccion1)
+                    .addComponent(TxtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnOcultar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lTituloDireccion1)
-                                    .addComponent(TxtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lTituloDireccion)
-                            .addComponent(TxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(BtnAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(LInsertPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(TxtPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(LInsertIp, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(BtnDefecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(lTituloPuerto))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LnumClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(BtnOcultar)
-                .addGap(7, 7, 7)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(LnumClientes))
+                .addGap(18, 18, 18)
                 .addComponent(lTituloDireccion1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TxtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,8 +244,8 @@ public class main extends javax.swing.JFrame {
 
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
         Encender(TxtDirec.getText(), Integer.parseInt(TxtPuerto.getText()));
-         // Realizar comprobación de que los campos esten llenos
-        nickName=TxtNick.getText().trim();
+        // Realizar comprobación de que los campos esten llenos
+        nickName = TxtNick.getText().trim();
         LInsertIp.setText("Dirección: " + TxtDirec.getText());
         LInsertPuerto.setText("Puerto: " + TxtPuerto.getText());
         functionOsIs(nickName);
@@ -260,11 +253,12 @@ public class main extends javax.swing.JFrame {
 
     private void BtnDefectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDefectoActionPerformed
         Encender(ipDefecto, puertoDefecto);
-       
-        nickName=TxtNick.getText().trim();
+
+        nickName = TxtNick.getText().trim();
         LInsertIp.setText("Dirección: " + ipDefecto);
         LInsertPuerto.setText("Puerto: " + String.valueOf(puertoDefecto));
         functionOsIs(nickName);
+        BtnDefecto.setText("Desconectar");
     }//GEN-LAST:event_BtnDefectoActionPerformed
 
     private void BtnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEnviarActionPerformed
@@ -313,7 +307,7 @@ public class main extends javax.swing.JFrame {
         } else {
             try {
                 System.out.println("Cerrando el socket cliente");
-
+                functionOsIs("*/close");
                 clienteSocket.close();
 
                 System.exit(0);
@@ -356,14 +350,14 @@ public class main extends javax.swing.JFrame {
         try {
 
             if (primerMensaje == false) {
-               
+
                 System.out.println("NickName " + nickName);
 
                 os.write(nickName.trim().getBytes());
                 os.flush();
-                primerMensaje=true;
+                primerMensaje = true;
             } else {
-                
+
                 System.out.println("Calculo que enviamos " + texto);
 
                 os.write(texto.trim().getBytes());
@@ -417,12 +411,13 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JButton BtnAceptar;
     private javax.swing.JButton BtnDefecto;
     private javax.swing.JButton BtnEnviar;
-    private javax.swing.JButton BtnOcultar;
     private javax.swing.JLabel LInsertIp;
     private javax.swing.JLabel LInsertPuerto;
+    public static javax.swing.JLabel LnumClientes;
     private javax.swing.JTextField TxtDirec;
     private javax.swing.JTextField TxtNick;
     private javax.swing.JTextField TxtPuerto;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

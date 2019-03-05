@@ -1,5 +1,6 @@
 package psp.chatcliente;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,6 +20,10 @@ public class main extends javax.swing.JFrame {
 
     // Para el botón On/Off
     Boolean encendido = false;
+
+    // Para enviar el nombre de usuario
+    Boolean primerMensaje = false;
+    String nickName;
 
     String conversacion = "";
 
@@ -53,6 +58,8 @@ public class main extends javax.swing.JFrame {
         BtnDefecto = new javax.swing.JButton();
         LInsertIp = new javax.swing.JLabel();
         LInsertPuerto = new javax.swing.JLabel();
+        lTituloDireccion1 = new javax.swing.JLabel();
+        TxtNick = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txArea = new javax.swing.JTextArea();
         txtEscribir = new javax.swing.JTextField();
@@ -115,42 +122,59 @@ public class main extends javax.swing.JFrame {
         LInsertPuerto.setText("Puerto:");
         LInsertPuerto.setToolTipText("");
 
+        lTituloDireccion1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lTituloDireccion1.setForeground(new java.awt.Color(134, 146, 153));
+        lTituloDireccion1.setText("NickName:");
+        lTituloDireccion1.setToolTipText("");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnOcultar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LInsertPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lTituloPuerto)
-                                .addComponent(lTituloDireccion)
-                                .addComponent(TxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(TxtPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(LInsertIp, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(BtnDefecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                            .addComponent(BtnOcultar, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lTituloDireccion1)
+                                    .addComponent(TxtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lTituloDireccion)
+                            .addComponent(TxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(BtnAceptar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(LInsertPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(TxtPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(LInsertIp, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(BtnDefecto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lTituloPuerto))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(BtnOcultar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(7, 7, 7)
+                .addComponent(lTituloDireccion1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TxtNick, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addComponent(lTituloDireccion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(TxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lTituloPuerto)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(TxtPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addComponent(BtnAceptar)
                 .addGap(34, 34, 34)
                 .addComponent(BtnDefecto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +182,7 @@ public class main extends javax.swing.JFrame {
                 .addComponent(LInsertIp)
                 .addGap(18, 18, 18)
                 .addComponent(LInsertPuerto)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         txArea.setEditable(false);
@@ -169,6 +193,11 @@ public class main extends javax.swing.JFrame {
         txtEscribir.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtEscribir.setAutoscrolls(false);
         txtEscribir.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtEscribir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtEscribirKeyPressed(evt);
+            }
+        });
 
         BtnEnviar.setText("Enviar");
         BtnEnviar.addActionListener(new java.awt.event.ActionListener() {
@@ -197,12 +226,12 @@ public class main extends javax.swing.JFrame {
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BtnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEscribir))
-                .addContainerGap())
+                    .addComponent(txtEscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,29 +251,46 @@ public class main extends javax.swing.JFrame {
 
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
         Encender(TxtDirec.getText(), Integer.parseInt(TxtPuerto.getText()));
+         // Realizar comprobación de que los campos esten llenos
+        nickName=TxtNick.getText().trim();
         LInsertIp.setText("Dirección: " + TxtDirec.getText());
         LInsertPuerto.setText("Puerto: " + TxtPuerto.getText());
+        functionOsIs(nickName);
     }//GEN-LAST:event_BtnAceptarActionPerformed
 
     private void BtnDefectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDefectoActionPerformed
         Encender(ipDefecto, puertoDefecto);
+       
+        nickName=TxtNick.getText().trim();
         LInsertIp.setText("Dirección: " + ipDefecto);
         LInsertPuerto.setText("Puerto: " + String.valueOf(puertoDefecto));
+        functionOsIs(nickName);
     }//GEN-LAST:event_BtnDefectoActionPerformed
 
     private void BtnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEnviarActionPerformed
-        recibirTexto(txtEscribir.getText());
+        //recibirTexto(txtEscribir.getText());
+        String textoRecogido = txtEscribir.getText();
+        functionOsIs(textoRecogido);
         txtEscribir.setText("");
     }//GEN-LAST:event_BtnEnviarActionPerformed
+
+    private void txtEscribirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribirKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            // recibirTexto(txtEscribir.getText());
+            String textoRecogido = txtEscribir.getText();
+            functionOsIs(textoRecogido);
+            txtEscribir.setText("");
+        }
+    }//GEN-LAST:event_txtEscribirKeyPressed
 
     /**
      * Función On/Off, que conecta y desconecta(además de cerrar la calculadora)
      * el cliente con el servidor
      *
      * @param direccion
-     * @param Puerto
+     * @param puerto
      */
-    public void Encender(String direccion, int Puerto) {
+    public void Encender(String direccion, int puerto) {
         if (encendido == false) {
 
             try {
@@ -252,13 +298,13 @@ public class main extends javax.swing.JFrame {
 
                 clienteSocket = new Socket();
 
-                InetSocketAddress addr = new InetSocketAddress(direccion, Puerto);
+                InetSocketAddress addr = new InetSocketAddress(direccion, puerto);
 
                 clienteSocket.connect(addr);
 
                 is = clienteSocket.getInputStream();
                 os = clienteSocket.getOutputStream();
-                
+
                 // Creamos un usuario donde en la clase se creará un hilo que se pondrá a la escuha de cualquier menjase que recibe del servidor
                 new Usuarios(clienteSocket);
             } catch (IOException ex) {
@@ -285,7 +331,7 @@ public class main extends javax.swing.JFrame {
      * @return texto
      */
     private void recibirTexto(String texto) {
-        functionOsIs(texto);
+        //  functionOsIs(texto);
     }
 
     /**
@@ -295,9 +341,9 @@ public class main extends javax.swing.JFrame {
      * @param resTexto
      */
     public void insertText(String resTexto) {
-       // conversacion += resTexto + "\n";
+        // conversacion += resTexto + "\n";
 
-      //  txArea.setText(conversacion);
+        //  txArea.setText(conversacion);
     }
 
     /**
@@ -308,17 +354,23 @@ public class main extends javax.swing.JFrame {
     private void functionOsIs(String texto) {
 
         try {
-            System.out.println("Calculo que enviamos " + texto);
 
-            os.write(texto.getBytes());
+            if (primerMensaje == false) {
+               
+                System.out.println("NickName " + nickName);
 
-            resultado = new byte[2000];
+                os.write(nickName.trim().getBytes());
+                os.flush();
+                primerMensaje=true;
+            } else {
+                
+                System.out.println("Calculo que enviamos " + texto);
 
-//            is.read(resultado);
-//
-//            String respuesta = new String(resultado);
-//            System.out.println("Mensaje que recibimos  " + respuesta);
-            //   insertText(new String(resultado));
+                os.write(texto.trim().getBytes());
+                os.flush();
+
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
@@ -369,11 +421,13 @@ public class main extends javax.swing.JFrame {
     private javax.swing.JLabel LInsertIp;
     private javax.swing.JLabel LInsertPuerto;
     private javax.swing.JTextField TxtDirec;
+    private javax.swing.JTextField TxtNick;
     private javax.swing.JTextField TxtPuerto;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lTituloDireccion;
+    private javax.swing.JLabel lTituloDireccion1;
     private javax.swing.JLabel lTituloPuerto;
     public static javax.swing.JTextArea txArea;
     private javax.swing.JTextField txtEscribir;

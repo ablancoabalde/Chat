@@ -12,11 +12,13 @@ import java.util.logging.Logger;
  * @author Alberto
  */
 public class Usuarios {
+   
     
     // Cuando se crea el socket para el usuario este ya empieza el hilo propio
-    public Usuarios(Socket newSocket) {
+    public Usuarios(Socket oldSocket) {
+       
         try {
-            new hilo(newSocket).start();
+            new hilo(oldSocket).start();
         } catch (IOException ex) {
             Logger.getLogger(Usuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -24,14 +26,14 @@ public class Usuarios {
 
     public class hilo extends Thread {
 
-        Socket oldSocket;
+        Socket newSocket;
         InputStream oldIs;
         OutputStream oldOs;
-        byte[] mensaje;
+        byte[] respuesta;
 
-        public hilo(Socket newSocket) throws IOException {
+        public hilo(Socket oldSocket) throws IOException {
 
-            oldSocket = newSocket;
+            newSocket = oldSocket;
 
         }
 
@@ -39,19 +41,22 @@ public class Usuarios {
         public void run() {
 
             try {
-                oldIs = oldSocket.getInputStream();
-                oldOs = oldSocket.getOutputStream();
-                // Se hace un do while para quedar a la espera de nuevos Usuarios
+                oldIs = newSocket.getInputStream();
+                oldOs = newSocket.getOutputStream();
+                // Se hace un do while para quedar a la espera de nuevas respuestas al usuario
+                int contador = 0;
+
                 do {
 
-                    mensaje = new byte[2000];
+                    System.out.println("Respuesta " + (contador += 1));
+                    respuesta = new byte[65535];
 
-                    oldIs.read(mensaje);
+                    oldIs.read(respuesta);
 
-                    String txtServer = new String(mensaje);
+                    txtArea(respuesta);
 
-                    main.txArea.append(txtServer + "\n");
                 } while (true);
+              
 
                 //newSocket.close();
                 // System.out.println("Cerrando el socket servidor");
@@ -63,4 +68,11 @@ public class Usuarios {
 
         }
     }
+
+    public void txtArea(byte[] otro) {
+        String txtServer = new String(otro);
+
+        main.txArea.append(txtServer + "\n");
+    }
+
 }

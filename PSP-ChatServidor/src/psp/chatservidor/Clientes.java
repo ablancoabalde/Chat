@@ -10,14 +10,14 @@ import java.util.ArrayList;
  */
 public class Clientes {
     
-    public static  ArrayList<Clientes> clientes = new ArrayList<Clientes>();
+    public static  ArrayList<Clientes> arrayClientes = new ArrayList<Clientes>();
       Socket Socket;
       String nick;
       
     public Clientes(Socket rSocket, String rNick) {
         Socket=rSocket;
         nick=rNick;
-        clientes.add(this);
+        arrayClientes.add(this);
     }
 
     public Socket getSocket() {

@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,8 +22,11 @@ public class Conexion {
     final String ipDefecto = "localhost";
     final int puertoDefecto = 5555;
     final String mensajeBienvenida = "Bienvenido ";
+    final int maxClientes = 1;
 
     int usuarios = 0;
+
+    Boolean condicion = true;
 
     ServerSocket serverSocket;
     InetSocketAddress addr;
@@ -69,19 +73,30 @@ public class Conexion {
             serverSocket.bind(addr);
 
             // Se hace el bucle do while para que el servidor quede a la escucha nuevas conexiónes con otro cliente
-            do {
-
-               if(usuarios >= 3){
+            while (condicion) {
+                newSocket = null;
+                if (usuarios > maxClientes) {
                     System.out.println("Demasiados clientes");
-               }else{
-                            
+                    //newSocket = serverSocket.accept();
+                    //algo(newSocket);
+                } else {
                     newSocket = serverSocket.accept();
+                    algo(newSocket);
+                }
 
-                    new hilo(newSocket).start();
-                    usuarios += 1;                
-               }             
+            }
 
-            } while (usuarios <= 3);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
+    private void algo(Socket Socket) {
+
+        try {
+
+            new hilo(Socket).start();
+            usuarios += 1;
 
         } catch (IOException e) {
             System.out.println(e);
@@ -110,6 +125,7 @@ public class Conexion {
         public void run() {
 
             try {
+                Boolean condicionCierre = true;
                 oldIs = oldSocket.getInputStream();
                 oldOs = oldSocket.getOutputStream();
                 // Se hace un do while para quedar a la espera de nuevos Usuarios
@@ -127,9 +143,10 @@ public class Conexion {
                         // Para ver por consola que recibimos
                         System.out.println("Mensaje que recibimos " + respuesta);
 
-                        // Recorremos el Arraylist creado en la clase clientes y enviamos el mensaje de bienvenida a todos los 
+                        // Recorremos el Arraylist creado en la clase arrayClientes y enviamos el mensaje de bienvenida a todos los 
                         // sockets, para eso utilizamos el .getOutputStream() junto a su metodo write para enviar
-                        for (Clientes cli : Clientes.clientes) {
+                        for (Clientes cli : Clientes.arrayClientes) {
+                            cli.getSocket().getOutputStream().write(("/*usuarios"+Clientes.arrayClientes.size()).getBytes());
                             // La función trim la utilizo para que si el string tuviera algún espacio al final que lo elimine
                             cli.getSocket().getOutputStream().write(respuesta.trim().getBytes());
 
@@ -139,34 +156,62 @@ public class Conexion {
                     } else {
                         String respuesta = null;
 
-                        // Saber si en consola se está conectado bien y no genera más clientes de los que hay
+                        // Saber si en consola se está conectado bien y no genera más arrayClientes de los que hay
                         System.out.println("Servidor " + (contador += 1));
                         mensaje = new byte[2000];
 
                         int read = oldIs.read(mensaje);
 
-                        System.out.println("int read " + read);
+                        String algo = new String(mensaje);
 
-                        // Aquí se hacen 2 bucles, el 1º lo que hace es identificar que cliente envía el mensaje a traves de su socket
-                        // cuando lo encuentra agrega su nombre al mensaje escrito.
-                        for (Clientes cli : Clientes.clientes) {
+                        System.out.println(algo);
 
-                            if (cli.getSocket() == oldSocket) {
-                                respuesta = cli.getNick() + " " + new String(mensaje);
-                                System.out.println("Mensaje que recibimos " + respuesta);
+                        if (algo.contains("*/close")) {
 
+                            usuarios -= 1;
+                            for (Iterator<Clientes> iterator = Clientes.arrayClientes.iterator(); iterator.hasNext();) {
+                                Clientes obj = iterator.next();
+                                System.out.println(obj.Socket);
+                                if (obj.Socket.equals(oldSocket)) {
+                                    // Remove the current element from the iterator and the list.
+                                    iterator.remove();
+                                }
+                            }
+                            if (algo.contains("*/close") && usuarios == 0) {
+                                oldSocket.close();
+                                serverSocket.close();
+                                condicionCierre = false;
+                            } else {
+                                oldSocket.close();
+                                condicionCierre = false;
+                            }
+
+                        } else {
+
+                            System.out.println("int read " + read);
+
+                            // Aquí se hacen 2 bucles, el 1º lo que hace es identificar que cliente envía el mensaje a traves de su socket
+                            // cuando lo encuentra agrega su nombre al mensaje escrito.
+                            for (Clientes cli : Clientes.arrayClientes) {
+
+                                if (cli.getSocket() == oldSocket) {
+                                    respuesta = cli.getNick() + " " + new String(mensaje);
+                                    System.out.println("Mensaje que recibimos " + respuesta);
+
+                                }
+
+                            }
+
+                            // Aquí envio el mensaje a todos los arrayClientes del Arraylis. No hago esto en el bucle anterior,
+                            //pues sí el mensaje que envio no es del primer cliente en la lista, me enviaría un mensaje Null y con ello una excepción                        
+                            for (Clientes cli : Clientes.arrayClientes) {
+                                cli.getSocket().getOutputStream().write(respuesta.getBytes());
                             }
 
                         }
 
-                        // Aquí envio el mensaje a todos los clientes del Arraylis. No hago esto en el bucle anterior,
-                        //pues sí el mensaje que envio no es del primer cliente en la lista, me enviaría un mensaje Null y con ello una excepción                        
-                        for (Clientes cli : Clientes.clientes) {
-                            cli.getSocket().getOutputStream().write(respuesta.getBytes());
-                        }
-
                     }
-                } while (true);
+                } while (condicionCierre);
 
                 //newSocket.close();
                 // System.out.println("Cerrando el socket servidor");

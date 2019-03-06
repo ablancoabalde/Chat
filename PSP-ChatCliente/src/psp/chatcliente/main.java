@@ -1,5 +1,6 @@
 package psp.chatcliente;
 
+import static java.awt.Color.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,17 +16,18 @@ import java.util.logging.Logger;
  */
 public class main extends javax.swing.JFrame {
 
+    // Variables Constantes que no van a cambiar
     final String ipDefecto = "localhost";
     final int puertoDefecto = 5555;
+    final String mensajeCierre = "*/close";
 
     // Para el botón On/Off
     Boolean encendido = false;
 
-    // Para enviar el nombre de usuario
+    // Variable utilizada para el primer mensaje de cada nuevo usuario
     Boolean primerMensaje = false;
+    // Variable que almacena el nombre del usuario
     String nickName;
-
-    String conversacion = "";
 
     // Array de bytes para el recoger la información del servidor
     byte[] resultado;
@@ -68,17 +70,17 @@ public class main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(246, 250, 241));
+        jPanel1.setBackground(new java.awt.Color(178, 23, 19));
 
-        jPanel2.setBackground(new java.awt.Color(240, 227, 210));
+        jPanel2.setBackground(new java.awt.Color(28, 113, 178));
 
         lTituloDireccion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lTituloDireccion.setForeground(new java.awt.Color(134, 146, 153));
+        lTituloDireccion.setForeground(new java.awt.Color(252, 255, 78));
         lTituloDireccion.setText("Dirección:");
         lTituloDireccion.setToolTipText("");
 
         lTituloPuerto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lTituloPuerto.setForeground(new java.awt.Color(134, 146, 153));
+        lTituloPuerto.setForeground(new java.awt.Color(252, 255, 78));
         lTituloPuerto.setText("Puerto:");
         lTituloPuerto.setToolTipText("");
 
@@ -93,10 +95,11 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        BtnDefecto.setText("Por defecto");
+        BtnDefecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoReposo.png"))); // NOI18N
         BtnDefecto.setBorder(null);
         BtnDefecto.setBorderPainted(false);
         BtnDefecto.setContentAreaFilled(false);
+        BtnDefecto.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DefectoActivo.png"))); // NOI18N
         BtnDefecto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnDefectoActionPerformed(evt);
@@ -104,22 +107,26 @@ public class main extends javax.swing.JFrame {
         });
 
         LInsertIp.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        LInsertIp.setForeground(new java.awt.Color(134, 146, 153));
+        LInsertIp.setForeground(new java.awt.Color(252, 255, 78));
         LInsertIp.setText("Ip:");
         LInsertIp.setToolTipText("");
 
         LInsertPuerto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        LInsertPuerto.setForeground(new java.awt.Color(134, 146, 153));
+        LInsertPuerto.setForeground(new java.awt.Color(252, 255, 78));
         LInsertPuerto.setText("Puerto:");
         LInsertPuerto.setToolTipText("");
 
         lTituloDireccion1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lTituloDireccion1.setForeground(new java.awt.Color(134, 146, 153));
+        lTituloDireccion1.setForeground(new java.awt.Color(252, 255, 78));
         lTituloDireccion1.setText("NickName:");
         lTituloDireccion1.setToolTipText("");
 
+        TxtNick.setToolTipText("");
+
+        jLabel1.setForeground(new java.awt.Color(252, 255, 78));
         jLabel1.setText("Usuarios:");
 
+        LnumClientes.setForeground(new java.awt.Color(255, 58, 53));
         LnumClientes.setText("0");
         LnumClientes.setToolTipText("");
 
@@ -192,7 +199,8 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        BtnEnviar.setText("Enviar");
+        BtnEnviar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_EnviarReposo.png"))); // NOI18N
+        BtnEnviar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_EnviarActivo.png"))); // NOI18N
         BtnEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnEnviarActionPerformed(evt);
@@ -206,11 +214,11 @@ public class main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtEscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(BtnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtEscribir, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(BtnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -222,9 +230,9 @@ public class main extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BtnEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtEscribir, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(txtEscribir)
+                    .addComponent(BtnEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -242,35 +250,70 @@ public class main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción del botón Aceptar, llama a los metodos
+     * encender,insLabels,functionOsIs,cmBotones y guarda el nick del usuario en
+     * una variable. Antes de poder hacer esto tiene que validar con los metodos
+     * vCajaNick() y vCajasIpPort() que los TextField tengan contenido para que
+     * devuelvan True.
+     *
+     * @param evt
+     */
     private void BtnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAceptarActionPerformed
-        Encender(TxtDirec.getText(), Integer.parseInt(TxtPuerto.getText()));
-        // Realizar comprobación de que los campos esten llenos
-        nickName = TxtNick.getText().trim();
-        LInsertIp.setText("Dirección: " + TxtDirec.getText());
-        LInsertPuerto.setText("Puerto: " + TxtPuerto.getText());
-        functionOsIs(nickName);
+
+        if (vCajaNick() && vCajasIpPort()) {
+            encender(TxtDirec.getText(), Integer.parseInt(TxtPuerto.getText()));
+
+            nickName = TxtNick.getText().trim();
+
+            insLabels(TxtDirec.getText(), TxtPuerto.getText());
+            functionOsIs(nickName);
+            cmBotones();
+        }
+
+
     }//GEN-LAST:event_BtnAceptarActionPerformed
-
+    /**
+     * Acción del botón Por Defecto, llama a los metodos
+     * encender,insLabels,functionOsIs,cmBotones y guarda el nick del usuario en
+     * una variable. Antes de poder hacer esto tiene que validar con el metodo
+     * vCajaNick() que el TextField tengan contenido para que devuelvan True.
+     *
+     * @param evt
+     */
     private void BtnDefectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDefectoActionPerformed
-        Encender(ipDefecto, puertoDefecto);
 
-        nickName = TxtNick.getText().trim();
-        LInsertIp.setText("Dirección: " + ipDefecto);
-        LInsertPuerto.setText("Puerto: " + String.valueOf(puertoDefecto));
-        functionOsIs(nickName);
-        BtnDefecto.setText("Desconectar");
+        if (vCajaNick()) {
+            encender(ipDefecto, puertoDefecto);
+            nickName = TxtNick.getText().trim();
+            insLabels(ipDefecto, String.valueOf(puertoDefecto));
+            functionOsIs(nickName);
+            cmBotones();
+        }
+
     }//GEN-LAST:event_BtnDefectoActionPerformed
-
+    /**
+     * Acción del botón Enviar, recoje el mensaje escrito por el usuario en una
+     * variable y lo introduce en el metodo functionOsIs y luego vacie la caja
+     * de texto.
+     *
+     * @param evt
+     */
     private void BtnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEnviarActionPerformed
-        //recibirTexto(txtEscribir.getText());
+
         String textoRecogido = txtEscribir.getText();
         functionOsIs(textoRecogido);
         txtEscribir.setText("");
     }//GEN-LAST:event_BtnEnviarActionPerformed
-
+    /**
+     * Acción para el Textfield txtEscribir, el cuál recoje el evento de que si
+     * tiene el focus y presionamos el botón Enter envie el contenido de esta al
+     * metodo functionOsIs y luego se vacie
+     *
+     * @param evt
+     */
     private void txtEscribirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEscribirKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            // recibirTexto(txtEscribir.getText());
             String textoRecogido = txtEscribir.getText();
             functionOsIs(textoRecogido);
             txtEscribir.setText("");
@@ -278,13 +321,13 @@ public class main extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEscribirKeyPressed
 
     /**
-     * Función On/Off, que conecta y desconecta(además de cerrar la calculadora)
-     * el cliente con el servidor
+     * Función On/Off, que conecta y desconecta(además de cerrar el chat) el
+     * cliente con el servidor
      *
      * @param direccion
      * @param puerto
      */
-    public void Encender(String direccion, int puerto) {
+    public void encender(String direccion, int puerto) {
         if (encendido == false) {
 
             try {
@@ -306,10 +349,14 @@ public class main extends javax.swing.JFrame {
             }
         } else {
             try {
+                // Cuando se haga la llamada de desconectar llamamos al metodo functionOsIs
+                //con un mensaje pre-Definido con un código, que hace que el servidor dé de baja a este cliente
                 System.out.println("Cerrando el socket cliente");
-                functionOsIs("*/close");
+                functionOsIs(mensajeCierre);
+                // Metodo que limpia los TextField
+                limpiar();
                 clienteSocket.close();
-
+                // Cierre del systema
                 System.exit(0);
                 System.out.println("Terminado");
             } catch (IOException ex) {
@@ -319,31 +366,90 @@ public class main extends javax.swing.JFrame {
     }
 
     /**
-     * Funcion que recibe el texto y lo devuelve
+     * Metodo para validar el TextField Nick, si la caja está vacía introduce en
+     * esta Nombre requerido y en color rojo como mensaje de alerta y retorna
+     * false para que no se pueda operar al contrario si todo es correcto pone
+     * la letra en negro y envía true
+     *
+     * @return false
+     * @return true
+     */
+    private Boolean vCajaNick() {
+
+        if (TxtNick.getText().isEmpty()) {
+            TxtNick.setForeground(red);
+            TxtNick.setText("Nombre Requerido");
+            return false;
+        } else {
+            TxtNick.setForeground(black);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo para validar los TextFields Ip y Puerto, si las cajas está vacías
+     * introduce en ellas Dirección requerida o Puerto Requerid y en color rojo
+     * como mensaje de alerta y retorna false para que no se pueda operar al
+     * contrario si todo es correcto pone la letra en negro y envía true
+     *
+     * @return false
+     * @return true
+     */
+    private Boolean vCajasIpPort() {
+
+        if (TxtDirec.getText().isEmpty()) {
+            TxtDirec.setForeground(red);
+            TxtDirec.setText("Dirección Requerida");
+            return false;
+        } else if (TxtPuerto.getText().isEmpty()) {
+            TxtPuerto.setForeground(red);
+            TxtPuerto.setText("Puerto Requerido");
+            return false;
+        } else {
+            TxtDirec.setForeground(black);
+            TxtPuerto.setForeground(black);
+            return true;
+        }
+    }
+
+    /**
+     * Metodo que cambia los Iconos y los PressedIconos de los Botones Aceptar y
+     * Por Defecto una vez se pulsan una vez para indicar que la próxima vez que
+     * se pulse se desconectará.
+     */
+    private void cmBotones() {
+        BtnAceptar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesconectarReposo.png")));
+        BtnAceptar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesconectarActivo.png")));
+        BtnDefecto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesconectarReposo.png")));
+        BtnDefecto.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/ImgBotones/Btn_DesconectarActivo.png")));
+
+    }
+
+    /**
+     * Metodo que inserta en labels la dirección y puerto recibidos
+     *
+     * @param direc
+     * @param port
+     */
+    private void insLabels(String direc, String port) {
+        LInsertIp.setText("Dirección: " + direc);
+        LInsertPuerto.setText("Puerto: " + port);
+    }
+
+    /**
+     * Metodo que limpia las cajas de texto
+     */
+    private void limpiar() {
+        TxtNick.setText("");
+        txtEscribir.setText("");
+    }
+
+    /**
+     * Función que envia el mensaje al servidor, el primer mensaje es automático
+     * envia el Nombre del cliente, luego ya envia los mensajes del propio
+     * cliente
      *
      * @param texto
-     * @return texto
-     */
-    private void recibirTexto(String texto) {
-        //  functionOsIs(texto);
-    }
-
-    /**
-     * Función que inserta las respuestas de los conversantes del chat en el
-     * TextArea
-     *
-     * @param resTexto
-     */
-    public void insertText(String resTexto) {
-        // conversacion += resTexto + "\n";
-
-        //  txArea.setText(conversacion);
-    }
-
-    /**
-     * Función que envia el calculo al servidor y recoge el resultado de este.
-     *
-     * @param calculo
      */
     private void functionOsIs(String texto) {
 
@@ -351,14 +457,14 @@ public class main extends javax.swing.JFrame {
 
             if (primerMensaje == false) {
 
-                System.out.println("NickName " + nickName);
+                System.out.println("NickName que enviamos " + nickName);
 
                 os.write(nickName.trim().getBytes());
                 os.flush();
                 primerMensaje = true;
             } else {
 
-                System.out.println("Calculo que enviamos " + texto);
+                System.out.println("Mensaje que enviamos " + texto);
 
                 os.write(texto.trim().getBytes());
                 os.flush();

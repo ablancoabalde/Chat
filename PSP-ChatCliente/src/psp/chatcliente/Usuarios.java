@@ -13,7 +13,14 @@ import java.util.logging.Logger;
  */
 public class Usuarios {
 
-    // Cuando se crea el socket para el usuario este ya empieza el hilo propio
+    // Para identificar los mensajes que se usan para contar a los usuarios dentro del chat.
+    final String mensajeUsuarios = "/*usuarios";
+
+    /**
+     * Cuando se crea el socket para el usuario este ya empieza el hilo propio
+     *
+     * @param oldSocket
+     */
     public Usuarios(Socket oldSocket) {
 
         try {
@@ -23,6 +30,9 @@ public class Usuarios {
         }
     }
 
+    /**
+     * Clase que crea hilos de cada cliente
+     */
     public class hilo extends Thread {
 
         Socket newSocket;
@@ -42,18 +52,23 @@ public class Usuarios {
                 try {
                     oldIs = newSocket.getInputStream();
                     oldOs = newSocket.getOutputStream();
-                    // Se hace un do while para quedar a la espera de nuevas respuestas al usuario
+
+                    // Variable Local para controlar un error del systema
                     int contador = 0;
 
+                    // Se hace un do while para quedar a la espera de nuevas respuestas al usuario
                     do {
-
+                        // Mensaje por consola para controlar un error.
                         System.out.println("Respuesta " + (contador += 1));
+
                         respuesta = new byte[65535];
 
                         oldIs.read(respuesta);
 
-                        if (new String(respuesta).contains("/*usuarios")) {
-                            main.LnumClientes.setText(new String(respuesta).split("/*usuarios")[1]);
+                        // Condición para separar los mensajes que recibe del servidor,
+                        //la condición es utilizada para sacar la cantidad de usuarios que hay conectados ahora mismo, si no, escribe el texto
+                        if (new String(respuesta).contains(mensajeUsuarios)) {
+                            main.LnumClientes.setText(new String(respuesta).split(mensajeUsuarios)[1]);
                         } else {
                             txtArea(respuesta);
                         }
@@ -67,10 +82,16 @@ public class Usuarios {
         }
     }
 
-    public void txtArea(byte[] otro) {
-        String txtServer = new String(otro);
+    /**
+     * Metodo para insertar el texto en el TextArea de la clase Main
+     *
+     * @param mensaje
+     */
+    public void txtArea(byte[] mensaje) {
 
-        main.txArea.append(txtServer + "\n");
+        String msnTxtServer = new String(mensaje);
+        main.txArea.append(msnTxtServer + "\n");
+
     }
 
 }

@@ -36,7 +36,7 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f1" green="fa" red="f6" type="rgb"/>
+          <Color blue="13" green="17" red="b2" type="rgb"/>
         </Property>
       </Properties>
 
@@ -46,11 +46,11 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="381" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="txtEscribir" min="-2" pref="291" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="BtnEnviar" max="32767" attributes="0"/>
+                          <Component id="txtEscribir" pref="359" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="BtnEnviar" min="-2" pref="169" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -66,10 +66,10 @@
                   <Component id="jScrollPane1" min="-2" pref="419" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="BtnEnviar" max="32767" attributes="0"/>
-                      <Component id="txtEscribir" min="-2" pref="23" max="-2" attributes="0"/>
+                      <Component id="txtEscribir" max="32767" attributes="0"/>
+                      <Component id="BtnEnviar" pref="35" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace pref="30" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -78,7 +78,7 @@
         <Container class="javax.swing.JPanel" name="jPanel2">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="d2" green="e3" red="f0" type="rgb"/>
+              <Color blue="b2" green="71" red="1c" type="rgb"/>
             </Property>
           </Properties>
 
@@ -152,7 +152,7 @@
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="92" red="86" type="rgb"/>
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Direcci&#xf3;n:"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -168,7 +168,7 @@
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="92" red="86" type="rgb"/>
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Puerto:"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -194,12 +194,17 @@
             </Component>
             <Component class="javax.swing.JButton" name="BtnDefecto">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Por defecto"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/ImgBotones/Btn_DefectoReposo.png"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
+                <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/ImgBotones/Btn_DefectoActivo.png"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnDefectoActionPerformed"/>
@@ -211,7 +216,7 @@
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="92" red="86" type="rgb"/>
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ip:"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -223,7 +228,7 @@
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="92" red="86" type="rgb"/>
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Puerto:"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -235,21 +240,30 @@
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="92" red="86" type="rgb"/>
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="NickName:"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="TxtNick">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="4e" green="ff" red="fc" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Usuarios:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="LnumClientes">
               <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="35" green="3a" red="ff" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="0"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -292,7 +306,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="BtnEnviar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Enviar"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ImgBotones/Btn_EnviarReposo.png"/>
+            </Property>
+            <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/ImgBotones/Btn_EnviarActivo.png"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnEnviarActionPerformed"/>
